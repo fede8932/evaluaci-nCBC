@@ -3,5 +3,6 @@ export class CreateEmployeeDto {
   lastName: string;
   email: string;
   phone: string;
+  leader: boolean;
   birthdate?: Date;
 }

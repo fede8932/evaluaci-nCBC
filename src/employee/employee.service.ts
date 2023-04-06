@@ -12,9 +12,32 @@ export class EmployeeService {
   ) {}
   async create(
     createEmployeeDto: CreateEmployeeDto | any,
-  ): Promise<void | Error> {
+  ): Promise<string | Error> {
     try {
       await this.employee.create(createEmployeeDto);
+      return 'Creado';
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async deleteEmployee(id: number): Promise<string | Error> {
+    try {
+      const empleado: number = await this.employee.destroy({
+        where: {
+          id,
+        },
+      });
+      const respuesta = empleado ? 'Eliminado' : 'No encontrado';
+      return respuesta;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async findAllEmployees(): Promise<Employee[] | Error> {
+    try {
+      return await this.employee.findAll();
     } catch (e) {
       throw e;
     }

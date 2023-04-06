@@ -3,10 +3,10 @@ import {
   BelongsTo,
   Column,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Supervisor } from 'src/supervisor/entities/supervisor.entity';
 
 @Table({ tableName: 'employees', createdAt: false, updatedAt: false })
 export class Employee extends Model {
@@ -26,10 +26,16 @@ export class Employee extends Model {
   @Column
   birthdate: Date;
 
-  @ForeignKey(() => Supervisor)
+  @Column
+  leader: boolean;
+
+  @ForeignKey(() => Employee)
   @Column
   supervisorId: number;
 
-  @BelongsTo(() => Supervisor)
-  supervisor: Supervisor;
+  @BelongsTo(() => Employee, 'supervisorId')
+  supervisor: Employee;
+
+  @HasMany(() => Employee, 'supervisorId')
+  subordinados: Employee[];
 }
