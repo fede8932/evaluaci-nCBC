@@ -1,35 +1,53 @@
-import { IsEmail } from 'class-validator';
 import {
   BelongsTo,
   Column,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Supervisor } from 'src/supervisor/entities/supervisor.entity';
 
 @Table({ tableName: 'employees', createdAt: false, updatedAt: false })
 export class Employee extends Model {
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { notEmpty: true } })
   firstName: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { notEmpty: true } })
   lastName: string;
 
-  @Column({ allowNull: false })
-  @IsEmail()
+  @Column({
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
+    },
+  })
   email: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { notEmpty: true } })
   phone: string;
 
-  @Column
+  @Column({
+    validate: {
+      isDate: true,
+    },
+  })
   birthdate: Date;
 
-  @ForeignKey(() => Supervisor)
-  @Column
+  @Column({ defaultValue: false })
+  leader: boolean;
+
+  @ForeignKey(() => Employee)
+  @Column({
+    validate: {
+      isInt: true,
+    },
+  })
   supervisorId: number;
 
-  @BelongsTo(() => Supervisor)
-  supervisor: Supervisor;
+  @BelongsTo(() => Employee, 'supervisorId')
+  supervisor: Employee;
+
+  @HasMany(() => Employee, 'supervisorId')
+  subordinados: Employee[];
 }

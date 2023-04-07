@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { EmployeeModule } from './employee/employee.module';
 import { Employee } from './employee/entities/employee.entity';
-import { Supervisor } from './supervisor/entities/supervisor.entity';
-// import { SupervisorModule } from './supervisor/supervisor.module';
 
 @Module({
   imports: [
@@ -13,10 +11,9 @@ import { Supervisor } from './supervisor/entities/supervisor.entity';
       port: 5432,
       database: 'cbc',
       autoLoadModels: true,
-      models: [Employee, Supervisor],
+      models: [Employee],
     }),
     EmployeeModule,
-    // SupervisorModule,
   ],
   controllers: [],
   providers: [],
