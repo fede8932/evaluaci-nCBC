@@ -36,7 +36,14 @@ export class EmployeeService {
     try {
       return await this.employee.findAll({
         where: { leader: true },
-        attributes: ['firstName', 'lastName', 'email', 'leader', 'birthdate'],
+        attributes: [
+          'id',
+          'firstName',
+          'lastName',
+          'email',
+          'leader',
+          'birthdate',
+        ],
       });
     } catch (e) {
       throw e;

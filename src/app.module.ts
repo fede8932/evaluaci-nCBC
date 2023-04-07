@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { Employee } from './employee/entities/employee.entity';
 import { dbConfig } from './config/database';
 import { EmployeeModule } from './employee/employee.module';
-import { Employee } from './employee/entities/employee.entity';
 
 @Module({
   imports: [
