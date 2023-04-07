@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { ReturnSupervisorDto } from './dto/return-supervisor.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 // import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './entities/employee.entity';
@@ -44,7 +45,7 @@ export class EmployeeService {
   }
 
   //arreglar tipos de datos
-  async findSupervisor(id): Promise<CreateEmployeeDto | Error> {
+  async findSupervisor(id): Promise<ReturnSupervisorDto | Error> {
     try {
       return await this.employee.findOne({
         where: { id },
@@ -80,39 +81,9 @@ export class EmployeeService {
         where: { id, leader: false },
       });
       if (!row) throw new Error('No se puede supervisar a un supervisor');
-      return 'Datos de empleado modificado';
+      return 'Datos de empleado modificados';
     } catch (e) {
       throw e;
     }
   }
-
-  async deleteEmployee(id: number): Promise<string | Error> {
-    try {
-      const empleado: number = await this.employee.destroy({
-        where: {
-          id,
-        },
-      });
-      const respuesta = empleado ? 'Eliminado' : 'No encontrado';
-      return respuesta;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  // findAll() {
-  //   return `This action returns all employee`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} employee`;
-  // }
-
-  // update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-  //   return `This action updates a #${id} employee`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} employee`;
-  // }
 }

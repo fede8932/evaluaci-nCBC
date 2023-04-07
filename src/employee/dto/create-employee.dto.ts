@@ -35,6 +35,7 @@ export class CreateEmployeeDto {
   @ApiProperty({
     description: 'Fecha opcional',
     example: '10-12-2023',
+    required: false,
   })
   birthdate?: Date;
 }

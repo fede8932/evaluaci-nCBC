@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Delete,
-  Param,
-  Put,
-  // Param,
-  // Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -18,7 +8,10 @@ import {
   ApiCreatedResponse,
   ApiBody,
   ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiParam,
 } from '@nestjs/swagger';
+import { ReturnSupervisorDto } from './dto/return-supervisor.dto';
 
 @Controller('/')
 @ApiTags('Empleados')
@@ -44,19 +37,13 @@ export class EmployeeController {
     }
   }
 
-  @Delete('employee/:id')
-  @ApiOperation({ summary: 'Eliminar un empleado' })
-  async remove(@Param('id') id: string): Promise<string | Error> {
-    try {
-      return await this.employeeService.deleteEmployee(+id);
-    } catch (e) {
-      console.log(e);
-      throw e.message;
-    }
-  }
-
   @Get('employee')
   @ApiOperation({ summary: 'Listar todos los empleados' })
+  @ApiOkResponse({
+    description: 'Lista de empleados obtenida exitosamente',
+    type: [CreateEmployeeDto],
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async findAll(): Promise<CreateEmployeeDto[] | Error> {
     try {
       return await this.employeeService.findAllEmployees();
@@ -70,6 +57,17 @@ export class EmployeeController {
   @ApiOperation({
     summary: 'Modificar datos de un empleado o asignar un supervisor',
   })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del empleado',
+    type: String,
+  })
+  @ApiBody({
+    type: UpdateEmployeeDto,
+    description: 'Algunos datos son opcionales',
+  })
+  @ApiCreatedResponse({ description: 'Datos de empleado modificados' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async update(
     @Param('id') id: string,
     @Body() dataEmployee: UpdateEmployeeDto,
@@ -87,6 +85,10 @@ export class EmployeeController {
   @ApiOperation({
     summary: 'Listar todos los supervisores',
   })
+  @ApiOkResponse({
+    description: 'Lista de supervisores obtenida exitosamente',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async findAllSupervisors(): Promise<CreateEmployeeDto[] | Error> {
     try {
       return await this.employeeService.findAllSupervisors();
@@ -100,9 +102,18 @@ export class EmployeeController {
   @ApiOperation({
     summary: 'Buscar supervisor por id y ver a todos los subordinados',
   })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del supervisor',
+    type: String,
+  })
+  @ApiOkResponse({
+    description: 'Supervisor obtenido exitosamente',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async findSupervisor(
     @Param('id') id: string,
-  ): Promise<CreateEmployeeDto | Error> {
+  ): Promise<ReturnSupervisorDto | Error> {
     try {
       return await this.employeeService.findSupervisor(+id);
     } catch (e) {
