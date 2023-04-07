@@ -12,13 +12,27 @@ import {
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-// import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiCreatedResponse,
+  ApiBody,
+  ApiInternalServerErrorResponse,
+} from '@nestjs/swagger';
 
 @Controller('/')
+@ApiTags('Empleados')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Post('employee')
+  @ApiOperation({ summary: 'Crear un empleado' })
+  @ApiBody({
+    type: CreateEmployeeDto,
+    description: 'Algunos datos son opcionales',
+  })
+  @ApiCreatedResponse({ description: 'Creado' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async create(
     @Body() dataEmployee: CreateEmployeeDto,
   ): Promise<string | Error> {
@@ -31,6 +45,7 @@ export class EmployeeController {
   }
 
   @Delete('employee/:id')
+  @ApiOperation({ summary: 'Eliminar un empleado' })
   async remove(@Param('id') id: string): Promise<string | Error> {
     try {
       return await this.employeeService.deleteEmployee(+id);
@@ -41,6 +56,7 @@ export class EmployeeController {
   }
 
   @Get('employee')
+  @ApiOperation({ summary: 'Listar todos los empleados' })
   async findAll(): Promise<CreateEmployeeDto[] | Error> {
     try {
       return await this.employeeService.findAllEmployees();
@@ -51,6 +67,9 @@ export class EmployeeController {
   }
 
   @Put('employee/:id')
+  @ApiOperation({
+    summary: 'Modificar datos de un empleado o asignar un supervisor',
+  })
   async update(
     @Param('id') id: string,
     @Body() dataEmployee: UpdateEmployeeDto,
@@ -65,6 +84,9 @@ export class EmployeeController {
   }
 
   @Get('supervisor')
+  @ApiOperation({
+    summary: 'Listar todos los supervisores',
+  })
   async findAllSupervisors(): Promise<CreateEmployeeDto[] | Error> {
     try {
       return await this.employeeService.findAllSupervisors();
@@ -75,6 +97,9 @@ export class EmployeeController {
   }
 
   @Get('supervisor/:id')
+  @ApiOperation({
+    summary: 'Buscar supervisor por id y ver a todos los subordinados',
+  })
   async findSupervisor(
     @Param('id') id: string,
   ): Promise<CreateEmployeeDto | Error> {
@@ -85,14 +110,4 @@ export class EmployeeController {
       throw e.message;
     }
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.employeeService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
-  //   return this.employeeService.update(+id, updateEmployeeDto);
-  // }
 }
