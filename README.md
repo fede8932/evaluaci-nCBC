@@ -31,16 +31,11 @@
 ```bash
 $ docker compose up
 
-## Support
+EJECUTAR CON DOCKER COMPOSE
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+-INSTALAR DOCKER Y DOCKER COMPOSE (SE RECOMIENDAN LAS VERSIONES MENCIONADAS)
+-DESCARGAR LA RAMA appDocker DEL REPO : https://github.com/fede8932/evaluaci-nCBC.git
+-INICIAR LA CONSOLA EN LA RAIZ DEL PROYECTO
+-EJECUTAR EL COMANDO docker compose o docker-compose DEPENDIENDO DE QUE HERRAMIENTA DE ORQUESTACIÓN DE CONTENEDORES TENGA INSTALADO.
+-SE PUEDE ACCEDER A LA DOCUMENTACION DEL PROYECTO DESDE http://localhost:3001/api EL PUERTO 3001 VIENE CONFIGURADO POR DEFECTO, PUEDE MODIFICARLO DESDE 
+EL ARCHIVO .ENV
