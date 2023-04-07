@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { dbConfig } from './config/database';
 import { EmployeeModule } from './employee/employee.module';
 import { Employee } from './employee/entities/employee.entity';
 
@@ -7,9 +8,11 @@ import { Employee } from './employee/entities/employee.entity';
   imports: [
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      database: 'cbc',
+      host: dbConfig.host,
+      port: dbConfig.dbPort,
+      database: dbConfig.db,
+      username: dbConfig.user,
+      password: dbConfig.pass,
       autoLoadModels: true,
       models: [Employee],
     }),
