@@ -1,4 +1,3 @@
-import { IsEmail } from 'class-validator';
 import {
   BelongsTo,
   Column,
@@ -10,27 +9,40 @@ import {
 
 @Table({ tableName: 'employees', createdAt: false, updatedAt: false })
 export class Employee extends Model {
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { notEmpty: true } })
   firstName: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { notEmpty: true } })
   lastName: string;
 
-  @Column({ allowNull: false })
-  @IsEmail()
+  @Column({
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
+    },
+  })
   email: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { notEmpty: true } })
   phone: string;
 
-  @Column
+  @Column({
+    validate: {
+      isDate: true,
+    },
+  })
   birthdate: Date;
 
-  @Column
+  @Column({ defaultValue: false })
   leader: boolean;
 
   @ForeignKey(() => Employee)
-  @Column
+  @Column({
+    validate: {
+      isInt: true,
+    },
+  })
   supervisorId: number;
 
   @BelongsTo(() => Employee, 'supervisorId')

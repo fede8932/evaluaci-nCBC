@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { ReturnSupervisorDto } from './dto/return-supervisor.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-// import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './entities/employee.entity';
 
 @Injectable()
@@ -44,7 +43,6 @@ export class EmployeeService {
     }
   }
 
-  //arreglar tipos de datos
   async findSupervisor(id): Promise<ReturnSupervisorDto | Error> {
     try {
       return await this.employee.findOne({
@@ -77,9 +75,11 @@ export class EmployeeService {
             'Supervisor inexistente, no se han guardado los cambios',
           );
       }
+      console.log('soy dt', data);
       const [row] = await this.employee.update(data, {
         where: { id, leader: false },
       });
+      console.log('soy row', row);
       if (!row) throw new Error('No se puede supervisar a un supervisor');
       return 'Datos de empleado modificados';
     } catch (e) {
